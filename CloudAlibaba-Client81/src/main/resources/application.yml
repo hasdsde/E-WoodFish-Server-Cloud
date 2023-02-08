@@ -1,0 +1,10 @@
+server:
+    port: 81
+spring:
+    application:
+        name: E-WoodFish-Client
+#    cloud:
+#        nacos:
+#            discovery:
+#                server-addr:
+#                    Dp:8848

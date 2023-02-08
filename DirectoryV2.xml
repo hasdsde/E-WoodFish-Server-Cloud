@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trees>
+    <tree path="/CloudAlibaba-Client81" icons="ToolwindowsInfoEvents"/>
+    <tree path="/CloudAlibaba-Client82" icons="ToolwindowsInfoEvents"/>
+    <tree path="/CloudAlibaba-Server-Score9001" icons="ActionsGroupByModule"/>
+    <tree path="/CloudAlibaba-Server-Logs9004" icons="ActionsGroupByModule"/>
+    <tree path="/CloudAlibaba-Server-Info9003" icons="ActionsGroupByModule"/>
+    <tree path="/CloudAlibaba-Server-Cost9002" icons="ActionsGroupByModule"/>
+    <tree path="/Common" icons="IdeLocalScopeAction"/>
+    <tree path="/SecurityOAuth2000" icons="NodesAnonymousClass"/>
+    <tree path="/CloudAlibaba-Server8002" icons="ToolwindowsWarningEvents"/>
+    <tree path="/CloudAlibaba-Server8001" icons="ToolwindowsWarningEvents"/>
+    <tree path="/CloudAlibaba-GateWay7001" icons="HierarchySubtypes"/>
+</trees>

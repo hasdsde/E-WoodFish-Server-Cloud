@@ -1,6 +1,11 @@
 package com.hasd.config;
 
+import com.hasd.entity.User;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -11,14 +16,36 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  **/
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        User user = new User();
+        auth.inMemoryAuthentication()
+                .withUser(user.getUserName())
+                .password("{noop}" + user.getPassWord())
+                .roles(user.getRole());
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin().permitAll()
 //                .and().exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint())//无权限处理方法
-                .and().authorizeRequests().antMatchers("/test/ant").permitAll()
+                .and().authorizeRequests().antMatchers("/login/*", "/oauth/*", "/logout/*").permitAll()
                 .anyRequest().authenticated()//默认拦截所有请求
                 //不拦截的路径
                 .and().logout().logoutUrl("/logout")//退出登录路径
                 .and().csrf().disable();//关闭csrf
     }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //不会要求认证的路径
+        web.ignoring().antMatchers("/test/ant");
+    }
+
 }

@@ -13,8 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class TestController {
+    
     @GetMapping("/test")
     public String getTest() {
         return "success";
+    }
+
+    @GetMapping("/ant")
+    public String ants() {
+        return "this Request will not be blocked";
     }
 }

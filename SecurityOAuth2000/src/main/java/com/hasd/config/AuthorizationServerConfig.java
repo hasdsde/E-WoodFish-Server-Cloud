@@ -1,14 +1,21 @@
 package com.hasd.config;
 
-import com.hasd.entity.Client;
+import com.hasd.service.MyUserDetailService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import javax.annotation.Resource;
 
@@ -19,40 +26,81 @@ import javax.annotation.Resource;
  **/
 
 @Configuration
-@EnableAuthorizationServer
+@EnableAuthorizationServer //启用以配置OAuth2授权服务器
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     @Resource
     private AuthenticationManager authenticationManager;
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        Client client = new Client();
-        clients.inMemory() //使用内存
-                .withClient(client.getClientId()) //客户端ID
-                .secret("{noop}" + client.getClientSecret())//客户端秘钥
-                .autoApprove(true)//自动返回授权码
-                .redirectUris("https://www.baidu.com") //重定向URL
-                .scopes(client.getScoop())//授权范围
-                .accessTokenValiditySeconds(client.getTokenValid()) //token时长
-                .refreshTokenValiditySeconds(client.getFlushTokenValid())//刷新token时长
-                .authorizedGrantTypes(client.getGrantTypes());//认证权限
+    @Resource
+    MyUserDetailService userDetailService;
+
+    @Resource
+    private TokenStore tokenStore;
+
+    @Resource
+    private ClientDetailsService clientDetailsService;
+
+    @Resource
+    private AuthorizationCodeServices authorizationCodeServices;
+
+    @Bean
+    public AuthorizationCodeServices authorizationCodeServices() {
+        return new InMemoryAuthorizationCodeServices();
     }
 
-    @Override
+    @Bean//设置令牌属性
+    public AuthorizationServerTokenServices tokenServices() {
+        DefaultTokenServices services = new DefaultTokenServices();
+        services.setClientDetailsService(clientDetailsService);
+        services.setSupportRefreshToken(true);
+        services.setTokenStore(tokenStore);
+        services.setAccessTokenValiditySeconds(7200);
+        services.setRefreshTokenValiditySeconds(259200);
+        return services;
+    }
+
+    @Override//客户端详情信息，可以将其写死或者使用数据库
+
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory() //使用内存,先写死配置
+                .withClient("c1") //客户端ID
+                .secret("secret")//客户端秘钥
+                .resourceIds("r1")
+                .authorizedGrantTypes("authorization_code", "implicit", "password", "client_credentials")//授权范围
+                .redirectUris("https://www.baidu.com") //重定向URL
+                .autoApprove(false)//自动返回授权码
+                .scopes("all");//授权范围
+        //这里也可以设置令牌属性
+//                .accessTokenValiditySeconds(client.getTokenValid()) //token时长
+//                .refreshTokenValiditySeconds(client.getFlushTokenValid());//刷新token时长
+    }
+
+    @Override//配置令牌token访问端点和令牌服务
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 .authenticationManager(authenticationManager)
-                .tokenStore(new InMemoryTokenStore());
+                .authorizationCodeServices(authorizationCodeServices)
+                .tokenServices(tokenServices())
+                .userDetailsService(userDetailService)
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST);
+        //自定义授权页面,替换用的URL
+//        endpoints.pathMapping("/oauth/confirm_access", "/custom/confirm_access");
     }
 
-    @Override
+    @Override//配置令牌端点的安全约束
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security
-                //开启/oauth/token_key验证端口认证权限访问
-                .tokenKeyAccess("isAuthenticated()")
-                //开启/oauth/check_token验证端口认证权限访问
-                .checkTokenAccess("isAuthenticated()")
-                //允许表单认证
-                .allowFormAuthenticationForClients();
+                //下面两个设置为完全公开
+                .tokenKeyAccess("permitAll()")
+                .checkTokenAccess("permitAll()")
+                .allowFormAuthenticationForClients();//允许表单验证
+//                //开启/oauth/token_key验证端口认证权限访问
+//                .tokenKeyAccess("isAuthenticated()")
+//                //开启/oauth/check_token验证端口认证权限访问
+//                .checkTokenAccess("isAuthenticated()")
+//                //允许表单认证
+//                .allowFormAuthenticationForClients();
     }
+
+
 }

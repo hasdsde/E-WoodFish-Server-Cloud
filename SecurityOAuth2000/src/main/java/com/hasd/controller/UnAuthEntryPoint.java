@@ -1,5 +1,7 @@
 package com.hasd.controller;
 
+import com.hasd.config.NormalException;
+import com.hasd.entity.Code;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -20,5 +22,6 @@ public class UnAuthEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         //没有权限，返回错误
+        throw new NormalException("没有权限", Code.CODE_FORBIDDEN);
     }
 }

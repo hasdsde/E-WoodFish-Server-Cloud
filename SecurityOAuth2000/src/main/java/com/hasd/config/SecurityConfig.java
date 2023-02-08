@@ -1,11 +1,8 @@
 package com.hasd.config;
 
-import com.hasd.entity.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -16,22 +13,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  **/
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Bean
+
+    @Bean//认证管理器
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        User user = new User();
-        auth.inMemoryAuthentication()
-                .withUser(user.getUserName())
-                .password("{noop}" + user.getPassWord())
-                .roles(user.getRole());
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        User user = new User();
+//        auth.inMemoryAuthentication()
+//                .withUser(user.getUsername())
+//                .password("{noop}" + user.getPassword())
+//                .roles(user.getRole());
+//    }
 
-    @Override
+    @Override//安全拦截机制
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin().permitAll()
 //                .and().exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint())//无权限处理方法
@@ -40,12 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //不拦截的路径
                 .and().logout().logoutUrl("/logout")//退出登录路径
                 .and().csrf().disable();//关闭csrf
+//                .addFilter(new LoginFilter());//登录过滤器
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        //不会要求认证的路径
-        web.ignoring().antMatchers("/test/ant");
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        //不会要求认证的路径
+//        web.ignoring().antMatchers("/test/ant");
+//    }
 
 }

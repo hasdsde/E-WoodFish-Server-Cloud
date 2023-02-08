@@ -1,6 +1,7 @@
 package com.hasd.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author : hasd
@@ -9,8 +10,12 @@ import lombok.Data;
  **/
 
 @Data
+@ToString
 public class User {
-    private String userName = "hutao";
-    private String passWord = "123456";
+    private String username = "hutao";
+    private String password = "123456";
     private String role = "Admin";
+    private String nickName;
+    private String salt;
+    private String token;
 }

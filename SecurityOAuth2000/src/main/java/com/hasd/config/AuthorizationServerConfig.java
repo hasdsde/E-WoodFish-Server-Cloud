@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -64,12 +65,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory() //使用内存,先写死配置
                 .withClient("c1") //客户端ID
-                .secret("secret")//客户端秘钥
+                .secret(new BCryptPasswordEncoder().encode("secret"))//客户端秘钥
                 .resourceIds("r1")
-                .authorizedGrantTypes("authorization_code", "implicit", "password", "client_credentials")//授权范围
-                .redirectUris("https://www.baidu.com") //重定向URL
+                .authorizedGrantTypes("authorization_code", "implicit", "password", "client_credentials", "refresh_token")//授权范围
+                .scopes("all")//授权范围
                 .autoApprove(false)//自动返回授权码
-                .scopes("all");//授权范围
+                .redirectUris("https://www.baidu.com"); //重定向URL
         //这里也可以设置令牌属性
 //                .accessTokenValiditySeconds(client.getTokenValid()) //token时长
 //                .refreshTokenValiditySeconds(client.getFlushTokenValid());//刷新token时长

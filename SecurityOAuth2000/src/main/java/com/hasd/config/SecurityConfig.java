@@ -5,6 +5,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author : hasd
@@ -15,11 +17,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean//认证管理器
-    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    //密码编码器
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        User user = new User();
@@ -34,10 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin().permitAll()
 //                .and().exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint())//无权限处理方法
                 .and().authorizeRequests().antMatchers("/login/*", "/oauth/*", "/logout/*").permitAll()
-                .anyRequest().authenticated()//默认拦截所有请求
+//                .anyRequest().authenticated()//默认拦截所有请求
                 //不拦截的路径
                 .and().logout().logoutUrl("/logout")//退出登录路径
-                .and().csrf().disable();//关闭csrf
+                .and()
+                .csrf().disable();//关闭csrf
 //                .addFilter(new LoginFilter());//登录过滤器
     }
 

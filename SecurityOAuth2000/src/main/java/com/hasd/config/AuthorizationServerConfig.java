@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -13,7 +12,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
@@ -46,13 +44,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Resource
     private AuthorizationCodeServices authorizationCodeServices;
-
-    @Bean
-    public AuthorizationCodeServices authorizationCodeServices() {
-        return new InMemoryAuthorizationCodeServices();
-    }
-
-
     @Resource//奇怪autowired会报错
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
@@ -73,14 +64,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override//客户端详情信息，可以将其写死或者使用数据库
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory() //使用内存,先写死配置
-                .withClient("c1") //客户端ID
-                .secret(new BCryptPasswordEncoder().encode("secret"))//客户端秘钥
-                .resourceIds("r1")
-                .authorizedGrantTypes("authorization_code", "implicit", "password", "client_credentials", "refresh_token")//授权范围
-                .scopes("all")//授权范围
-                .autoApprove(false)//自动返回授权码
-                .redirectUris("https://www.baidu.com"); //重定向URL
+        clients.withClientDetails(clientDetailsService);
+//        clients.inMemory() //使用内存,先写死配置
+//                .withClient("c1") //客户端ID
+//                .secret(new BCryptPasswordEncoder().encode("secret"))//客户端秘钥
+//                .resourceIds("r1")
+//                .authorizedGrantTypes("authorization_code", "implicit", "password", "client_credentials", "refresh_token")//授权范围
+//                .scopes("all")//授权范围
+//                .autoApprove(false)//自动返回授权码
+//                .redirectUris("https://www.baidu.com"); //重定向URL
         //这里也可以设置令牌属性
 //                .accessTokenValiditySeconds(client.getTokenValid()) //token时长
 //                .refreshTokenValiditySeconds(client.getFlushTokenValid());//刷新token时长

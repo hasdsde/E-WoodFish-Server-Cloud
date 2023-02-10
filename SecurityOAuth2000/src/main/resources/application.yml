@@ -4,9 +4,11 @@ spring:
     application:
         name: Security-OAuth-Server2000
     datasource:
-        url: jdbc:mysql://hasdsd.cn:3307/cloudtest
+        url: jdbc:mysql://hasdsd.cn:3307/oauth
         driver-class-name: com.mysql.cj.jdbc.Driver
         username: root
         password: 123456
         hikari:
             max-lifetime: 120000
+    main:
+        allow-bean-definition-overriding: true

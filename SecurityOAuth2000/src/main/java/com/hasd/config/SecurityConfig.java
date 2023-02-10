@@ -7,6 +7,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
+
+import javax.sql.DataSource;
 
 /**
  * @author : hasd
@@ -25,6 +31,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthorizationCodeServices authorizationCodeServices(DataSource dataSource) {
+        return new JdbcAuthorizationCodeServices(dataSource);
+    }
+
+    @Bean
+    public ClientDetailsService clientDetailsService(DataSource dataSource) {
+        JdbcClientDetailsService jdbcClientDetailsService = new JdbcClientDetailsService(dataSource);
+        jdbcClientDetailsService.setPasswordEncoder(passwordEncoder());
+        return jdbcClientDetailsService;
     }
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {

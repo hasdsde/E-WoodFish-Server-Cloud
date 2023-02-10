@@ -37,5 +37,6 @@ public class MyUserDetailService implements UserDetailsService {
 //                .password(new BCryptPasswordEncoder().encode("123"))
 //                .authorities("all", "p1").build();
 
+        
     }
 }

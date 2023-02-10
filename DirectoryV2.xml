@@ -8,6 +8,7 @@
     <tree path="/CloudAlibaba-Server-Cost9002" icons="ActionsGroupByModule"/>
     <tree path="/Common" icons="IdeLocalScopeAction"/>
     <tree path="/SecurityOAuth2000" icons="NodesAnonymousClass"/>
+    <tree path="/SecurityOAuth-Resource3000" icons="NodesAnonymousClass"/>
     <tree path="/CloudAlibaba-Server8002" icons="ToolwindowsWarningEvents"/>
     <tree path="/CloudAlibaba-Server8001" icons="ToolwindowsWarningEvents"/>
     <tree path="/CloudAlibaba-GateWay7001" icons="HierarchySubtypes"/>

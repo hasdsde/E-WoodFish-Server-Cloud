@@ -20,6 +20,7 @@
         <module>CloudAlibaba-Server-Logs9004</module>
         <module>Common</module>
         <module>SecurityOAuth2000</module>
+        <module>SecurityOAuth-Resource3000</module>
     </modules>
 
     <properties>

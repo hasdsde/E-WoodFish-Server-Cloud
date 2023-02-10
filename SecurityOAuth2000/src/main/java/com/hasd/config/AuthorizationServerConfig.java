@@ -61,7 +61,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Override//客户端详情信息，可以将其写死或者使用数据库
-
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory() //使用内存,先写死配置
                 .withClient("c1") //客户端ID

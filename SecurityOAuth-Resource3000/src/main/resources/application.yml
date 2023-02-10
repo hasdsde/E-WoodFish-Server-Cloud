@@ -1,0 +1,9 @@
+server:
+    port: 3000
+spring:
+    application:
+        name: SecurityOAuth-Resource
+logging:
+    level:
+        org.springframework.web: debug
+

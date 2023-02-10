@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,7 +27,7 @@ public class MyUserDetailService implements UserDetailsService {
 //        User user = new User();
         //数据先写死
         return User.withUsername("hutao")
-                .password("{noop}123")
+                .password(new BCryptPasswordEncoder().encode("123"))
                 .authorities("all").build();
 
     }

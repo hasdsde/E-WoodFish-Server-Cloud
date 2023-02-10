@@ -28,7 +28,7 @@ public class MyUserDetailService implements UserDetailsService {
         //数据先写死
         return User.withUsername("hutao")
                 .password(new BCryptPasswordEncoder().encode("123"))
-                .authorities("all").build();
+                .authorities("all", "p1").build();
 
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import javax.annotation.Resource;
 
@@ -21,6 +22,10 @@ import javax.annotation.Resource;
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
+    @Resource
+    public TokenStore tokenStore;
+
     @Bean
     public ResourceServerTokenServices resourceServerTokenServices() {
         RemoteTokenServices services = new RemoteTokenServices();
@@ -36,7 +41,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId("r1")
-                .tokenServices(resourceServerTokenServices)
+                //.tokenServices(resourceServerTokenServices)
+                .tokenStore(tokenStore)
                 .stateless(true);
     }
 

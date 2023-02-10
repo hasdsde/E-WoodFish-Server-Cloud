@@ -16,9 +16,12 @@ import org.springframework.security.oauth2.provider.code.AuthorizationCodeServic
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 
 /**
  * @author : hasd
@@ -49,6 +52,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new InMemoryAuthorizationCodeServices();
     }
 
+
+    @Resource//奇怪autowired会报错
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
+
     @Bean//设置令牌属性
     public AuthorizationServerTokenServices tokenServices() {
         DefaultTokenServices services = new DefaultTokenServices();
@@ -57,6 +64,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         services.setTokenStore(tokenStore);
         services.setAccessTokenValiditySeconds(7200);
         services.setRefreshTokenValiditySeconds(259200);
+
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Collections.singletonList(jwtAccessTokenConverter));
+        services.setTokenEnhancer(tokenEnhancerChain);
         return services;
     }
 

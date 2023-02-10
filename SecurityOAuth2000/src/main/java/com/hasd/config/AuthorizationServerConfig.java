@@ -1,5 +1,6 @@
 package com.hasd.config;
 
+import com.hasd.entity.CustomTokenEnhancer;
 import com.hasd.service.MyUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.annotation.Resource;
-import java.util.Collections;
+import java.util.Arrays;
 
 /**
  * @author : hasd
@@ -47,6 +48,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Resource//奇怪autowired会报错
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
+    @Resource
+    private CustomTokenEnhancer customTokenEnhancer;
+
     @Bean//设置令牌属性
     public AuthorizationServerTokenServices tokenServices() {
         DefaultTokenServices services = new DefaultTokenServices();
@@ -57,7 +61,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         services.setRefreshTokenValiditySeconds(259200);
 
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Collections.singletonList(jwtAccessTokenConverter));
+//        tokenEnhancerChain.setTokenEnhancers(Collections.singletonList(jwtAccessTokenConverter));
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(customTokenEnhancer, jwtAccessTokenConverter));
         services.setTokenEnhancer(tokenEnhancerChain);
         return services;
     }

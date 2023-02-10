@@ -1,7 +1,9 @@
 package com.hasd.service;
 
+import com.hasd.entity.UserDetailExpand;
 import com.hasd.mapper.UserMapper;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author : hasd
@@ -26,9 +29,13 @@ public class MyUserDetailService implements UserDetailsService {
 //        userMapper.selectOne()
 //        User user = new User();
         //数据先写死
-        return User.withUsername("hutao")
-                .password(new BCryptPasswordEncoder().encode("123"))
-                .authorities("all", "p1").build();
+        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList("all", "p1");
+        UserDetailExpand userDetailExpand = new UserDetailExpand("hutao", new BCryptPasswordEncoder().encode("123"), authorityList);
+        userDetailExpand.setSkill("唱跳rap");
+        return userDetailExpand;
+//        return User.withUsername("hutao")
+//                .password(new BCryptPasswordEncoder().encode("123"))
+//                .authorities("all", "p1").build();
 
     }
 }

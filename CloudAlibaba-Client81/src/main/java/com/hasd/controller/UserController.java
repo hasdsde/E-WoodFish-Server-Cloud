@@ -24,7 +24,8 @@ public class UserController {
     @GetMapping("/test")
     public String test() {
         List<User> users = userMapper.selecAll();
-        System.out.println(users.get(1));
+        User user = users.get(2);
+        System.out.println(user);
         return "success";
     }
 }

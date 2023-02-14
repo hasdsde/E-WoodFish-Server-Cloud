@@ -1,5 +1,6 @@
 package com.hasd.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class TestController {
-    @GetMapping("/test")
+    @Value("${server.port}")
+    public String PORT;//这里不能加static
+
+    @GetMapping("/auth")
     public String JustTest() {
-        return "test Success Port:82";
+        return "test Success Port:" + PORT;
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "success Port:" + PORT;
     }
 }

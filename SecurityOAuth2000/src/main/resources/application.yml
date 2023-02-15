@@ -12,3 +12,12 @@ spring:
             max-lifetime: 120000
     main:
         allow-bean-definition-overriding: true
+    cloud:
+        nacos:
+            discovery:
+                server-addr: localhost:8848
+#management:
+#    endpoints:
+#        web:
+#            exposure:
+#                include: '*'

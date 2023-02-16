@@ -3,7 +3,10 @@ server:
 spring:
     application:
         name: SecurityOAuth-Resource
-logging:
-    level:
-        org.springframework.web: debug
-
+#    cloud:
+#        nacos:
+#            discovery:
+#                server-addr: localhost:8848
+#logging:
+#    level:
+#        org.springframework.web: debug

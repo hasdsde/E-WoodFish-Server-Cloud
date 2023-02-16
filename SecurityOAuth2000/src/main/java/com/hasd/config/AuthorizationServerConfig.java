@@ -41,7 +41,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private TokenStore tokenStore;
 
     @Resource
-    private ClientDetailsService clientDetailsService;
+    ClientDetailsService clientDetailsService;
 
     @Resource
     private AuthorizationCodeServices authorizationCodeServices;

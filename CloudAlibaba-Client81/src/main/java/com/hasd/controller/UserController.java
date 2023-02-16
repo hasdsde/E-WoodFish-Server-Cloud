@@ -47,4 +47,10 @@ public class UserController {
         }
         return Result.success("注册成功");
     }
+
+
+    @GetMapping("/login")
+    public String loginToOAuth() {
+        return "forward:http://127.0.0.1:2000/oauth/authorize?client_id=c1&response_type=code&scope=all&redirect_uri=https://www.baidu.com";
+    }
 }

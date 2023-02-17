@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 /**
  * @author : hasd
@@ -37,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().antMatchers("/login/*", "/oauth/*", "/logout/*").permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and().logout().logoutUrl("/logout")
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 //.and().exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint())
                 .and().csrf().disable();
     }

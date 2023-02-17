@@ -34,10 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin().permitAll()
-//                .and().exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint())
                 .and().authorizeRequests().antMatchers("/login/*", "/oauth/*", "/logout/*").permitAll()
-                .and().authorizeRequests().anyRequest().permitAll()
+                .and().authorizeRequests().anyRequest().authenticated()
                 .and().logout().logoutUrl("/logout")
+                //.and().exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint())
                 .and().csrf().disable();
     }
 }

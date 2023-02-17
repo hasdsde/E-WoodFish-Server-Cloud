@@ -1,0 +1,16 @@
+server:
+    port: 2001
+spring:
+    application:
+        name: Security-OAuth-Server2001
+    datasource:
+        url: jdbc:mysql://hasdsd.cn:3307/oauth_server?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: 123456
+    cloud:
+        nacos:
+            discovery:
+                server-addr: localhost:8848
+    main:
+        allow-bean-definition-overriding: true

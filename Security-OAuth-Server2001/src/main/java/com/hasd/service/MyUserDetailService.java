@@ -1,6 +1,8 @@
 package com.hasd.service;
 
-import com.hasd.entity.UserDetailExpand;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.hasd.entity.MyUserDetail;
+import com.hasd.entity.User;
 import com.hasd.mapper.UserMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * @author : hasd
  * @version 1.0.0
- * @since : 2023/2/8 19:27
+ * @since : 2023/2/16 19:37
  **/
 
 @Service
@@ -25,16 +27,13 @@ public class MyUserDetailService implements UserDetailsService {
     UserMapper userMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        userMapper.selectOne()
-//        User user = new User();
-        //数据先写死
-        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList("all", "p1");
-        UserDetailExpand userDetailExpand = new UserDetailExpand("hutao", new BCryptPasswordEncoder().encode("123"), authorityList);
-        userDetailExpand.setSkill("唱跳rap");
-        return userDetailExpand;
-//        return User.withUsername("hutao")
-//                .password(new BCryptPasswordEncoder().encode("123"))
-//                .authorities("all", "p1").build();
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", s));
+        if (user == null) {
+            throw new UsernameNotFoundException("用户不存在");
+        }
+        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList("user");
+        MyUserDetail userDetail = new MyUserDetail(s, new BCryptPasswordEncoder().encode(user.getPassword()), authorityList);
+        return userDetail;
     }
 }

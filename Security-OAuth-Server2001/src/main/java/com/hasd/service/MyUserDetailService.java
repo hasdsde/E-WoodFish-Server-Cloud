@@ -32,7 +32,7 @@ public class MyUserDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList("user");
+        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(user.getRole());
         MyUserDetail userDetail = new MyUserDetail(s, new BCryptPasswordEncoder().encode(user.getPassword()), authorityList);
         return userDetail;
     }

@@ -1,16 +1,23 @@
 package com.hasd.controller;
 
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hasd.config.NormalException;
+import com.hasd.entity.Auth;
 import com.hasd.entity.Code;
 import com.hasd.entity.Result;
 import com.hasd.entity.User;
 import com.hasd.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,12 +25,28 @@ import java.util.List;
  * @version 1.0.0
  * @since : 2023/2/14 14:44
  **/
-
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Value("${server.port}")
+    private String SERVER_PORT;
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Resource
+    RestTemplate restTemplate;
+
+    private final String CLIENT_ID = "cloud-client81";
+    private final String LOCAL_URI = "http://localhost";
+    private final String REDIRECT_URL = LOCAL_URI + ":" + SERVER_PORT + "/user/access_code";
+
     @Resource
     UserMapper userMapper;
+
 
     @GetMapping("/test")
     public String test() {
@@ -51,6 +74,36 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginToOAuth() {
-        return "forward:http://127.0.0.1:2000/oauth/authorize?client_id=c1&response_type=code&scope=all&redirect_uri=https://www.baidu.com";
+        String url = LOCAL_URI + ":" + SERVER_PORT + "/oauth/authorize";
+        return "forward:" + url + "??client_id=" + CLIENT_ID + "&response_type=code&scope=user&redirect_uri=" + REDIRECT_URL;
     }
+
+    @GetMapping("/access_token")
+    public Result accessCode(@RequestParam("code") String code) {
+        log.info("code=" + code);
+        String url = "http://127.0.0.1:2001/oauth/token?" +
+                "code=" + code +
+                "&grant_type=" + "authorization_code" +
+                "&client_id=" + "cloud-client81" +
+                "&client_secret=" + "secret" +
+                "&redirect_uri=" + LOCAL_URI + ":" + SERVER_PORT + "/user/access_token";
+
+        try {
+            JSONObject result = restTemplate.postForObject(url, null, JSONObject.class);
+            if (result != null) {
+                log.info("result:" + result);
+                Auth auth = result.toBean(Auth.class);
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("access_token", auth.getAccess_token());
+                map.put("refresh_token", auth.getRefresh_token());
+                map.put("username", auth.getUser_info().getUsername());
+                return Result.success(map);
+            }
+        } catch (Exception e) {
+            throw new NormalException("access_error" + e.toString(), Code.CODE_AUTH_ERROR);
+        }
+        return Result.error(Code.CODE_AUTH_ERROR, "认证失败");
+
+    }
+
 }

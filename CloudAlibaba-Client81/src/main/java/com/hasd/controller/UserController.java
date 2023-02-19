@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -40,7 +41,13 @@ public class UserController {
     @Resource
     RestTemplate restTemplate;
 
-    private final String CLIENT_ID = "cloud-client81";
+    private String CLIENT_ID;
+
+    @PostConstruct
+    private void init() {
+        CLIENT_ID = "cloud-client" + SERVER_PORT;
+    }
+
     private final String LOCAL_URI = "http://localhost";
     private final String REDIRECT_URL = LOCAL_URI + ":" + SERVER_PORT + "/user/access_code";
 
@@ -84,7 +91,7 @@ public class UserController {
         String url = "http://127.0.0.1:2001/oauth/token?" +
                 "code=" + code +
                 "&grant_type=" + "authorization_code" +
-                "&client_id=" + "cloud-client81" +
+                "&client_id=" + CLIENT_ID +
                 "&client_secret=" + "secret" +
                 "&redirect_uri=" + LOCAL_URI + ":" + SERVER_PORT + "/user/access_token";
 

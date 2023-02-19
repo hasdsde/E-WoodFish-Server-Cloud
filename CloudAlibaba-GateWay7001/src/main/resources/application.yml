@@ -1,0 +1,15 @@
+server:
+    port: 7001
+spring:
+    application:
+        name: CloudAlibaba-GateWay
+        #    cloud:
+        #        nacos:
+        #            discovery:
+        #                server-addr: localhost:8848
+        gateway:
+            routes:
+                -   id: Server-User
+                    uri: lb://CloudAlibaba-Server
+                    predicates:
+                        - Path=/**

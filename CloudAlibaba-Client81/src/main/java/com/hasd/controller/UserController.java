@@ -103,7 +103,5 @@ public class UserController {
             throw new NormalException("access_error" + e.toString(), Code.CODE_AUTH_ERROR);
         }
         return Result.error(Code.CODE_AUTH_ERROR, "认证失败");
-
     }
-
 }

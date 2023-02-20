@@ -3,10 +3,10 @@ server:
 spring:
     application:
         name: CloudAlibaba-GateWay
-        #    cloud:
-        #        nacos:
-        #            discovery:
-        #                server-addr: localhost:8848
+        cloud:
+            nacos:
+                discovery:
+                    server-addr: localhost:8848
         gateway:
             routes:
                 -   id: Server-User

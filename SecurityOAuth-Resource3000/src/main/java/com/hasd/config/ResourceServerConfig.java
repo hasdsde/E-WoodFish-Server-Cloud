@@ -30,6 +30,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public ResourceServerTokenServices resourceServerTokenServices() {
         RemoteTokenServices services = new RemoteTokenServices();
         services.setCheckTokenEndpointUrl("http://127.0.0.1:2000/oauth/check_token");
+        //当前资源服务器ID
         services.setClientId("c1");
         services.setClientSecret("secret");
         return services;
@@ -40,8 +41,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        //当前资源id
         resources.resourceId("r1")
-                //.tokenServices(resourceServerTokenServices)
+                .tokenServices(resourceServerTokenServices)//启用令牌服务
                 .tokenStore(tokenStore)
                 .stateless(true);
     }

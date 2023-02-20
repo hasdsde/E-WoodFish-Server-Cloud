@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 public class TokenConfig {
+    //加密使用的秘钥
     public static final String SIGNING_KEY = "123";
 
     @Bean

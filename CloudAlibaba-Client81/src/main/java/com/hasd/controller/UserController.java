@@ -10,7 +10,7 @@ import com.hasd.entity.User;
 import com.hasd.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,13 +19,14 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author : hasd
  * @version 1.0.0
  * @since : 2023/2/14 14:44
  **/
+
+
 @Slf4j
 @RestController
 @RequestMapping("/user")
@@ -33,11 +34,7 @@ public class UserController {
     @Value("${server.port}")
     private String SERVER_PORT;
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
+    //重复调用问题
     @Resource
     RestTemplate restTemplate;
 
@@ -54,12 +51,9 @@ public class UserController {
     @Resource
     UserMapper userMapper;
 
-
-    @GetMapping("/test")
+    @PreAuthorize("hasAnyAuthority('user')")
+    @GetMapping("/chain")
     public String test() {
-        List<User> users = userMapper.selecAll();
-        User user = users.get(2);
-        System.out.println(user);
         return "success";
     }
 

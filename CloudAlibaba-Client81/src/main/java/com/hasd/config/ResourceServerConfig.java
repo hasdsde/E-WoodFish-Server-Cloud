@@ -24,7 +24,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests().anyRequest().access("#oauth2.hasScope('ROLE_USER')")
+                .authorizeRequests().antMatchers("/user/access_token").permitAll()
+                .anyRequest().access("#oauth2.hasScope('ROLE_USER')")
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
     }

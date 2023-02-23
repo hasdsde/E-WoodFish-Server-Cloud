@@ -22,6 +22,12 @@ public class UserController {
     @Resource
     RabbitTemplate rabbitTemplate;
 
+    @GetMapping("/chain")
+    public Result ChainTest() {
+        rabbitTemplate.convertAndSend("topics", "user.chain", "haha");
+        return Result.success();
+    }
+
     @PostMapping("/reg")
     public Result userReg(@RequestBody User user) {
         JSON json = JSONUtil.parse(user);

@@ -21,3 +21,9 @@ spring:
         nacos:
             discovery:
                 server-addr: localhost:8848
+    rabbitmq:
+        host: localhost
+        port: 5672
+        username: ewf
+        password: ewf
+        virtual-host: /ewf

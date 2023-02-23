@@ -1,6 +1,6 @@
 spring:
     application:
-        name: Service8001
+        name: CloudAlibaba-Service
     rabbitmq:
         host: localhost
         port: 5672
@@ -11,3 +11,5 @@ spring:
         nacos:
             discovery:
                 server-addr: localhost:8848
+server:
+    port: 8001

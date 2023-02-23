@@ -5,10 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.hasd.entity.Result;
 import com.hasd.entity.User;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -19,7 +16,7 @@ import javax.annotation.Resource;
  **/
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 
     @Resource
@@ -39,7 +36,7 @@ public class UserController {
         return Result.success();
     }
 
-    @PostMapping("/top")
+    @GetMapping("/top")
     public Result userTop() {
         rabbitTemplate.convertAndSend("topics", "top", "");
         return Result.success();

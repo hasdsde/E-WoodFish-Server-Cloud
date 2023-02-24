@@ -13,4 +13,5 @@
     <tree path="/CloudAlibaba-Server8001" icons="ToolwindowsWarningEvents"/>
     <tree path="/CloudAlibaba-GateWay7001" icons="HierarchySubtypes"/>
     <tree path="/Security-OAuth-Server2001" icons="ToolwindowsToolWindowCoverage"/>
+    <tree path="/Security-OAuth-Server4000" icons="ToolwindowsToolWindowCoverage"/>
 </trees>

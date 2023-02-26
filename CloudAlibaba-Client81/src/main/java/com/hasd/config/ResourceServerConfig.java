@@ -39,10 +39,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Resource
     TokenStore tokenStore;
 
-    
+
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.resourceId("res1").stateless(true)
+        resources.resourceId("client").stateless(true)
                 .tokenServices(resourceServerTokenServices)
                 .tokenStore(tokenStore)
                 .stateless(true);

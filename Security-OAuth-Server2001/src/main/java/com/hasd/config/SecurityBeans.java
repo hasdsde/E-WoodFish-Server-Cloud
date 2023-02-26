@@ -35,8 +35,8 @@ public class SecurityBeans {
     @Resource
     public TokenStore tokenStore;
 
-    @Resource
-    JwtAccessTokenConverter jwtAccessTokenConverter;
+//    @Resource
+//    JwtAccessTokenConverter jwtAccessTokenConverter;
 
     @Resource
     MyTokenEnhancer myTokenEnhancer;
@@ -60,7 +60,7 @@ public class SecurityBeans {
 
 
     @Bean
-    public AuthorizationServerTokenServices tokenServices() {
+    public AuthorizationServerTokenServices authorizationServerTokenServices() {
         DefaultTokenServices services = new DefaultTokenServices();
         services.setClientDetailsService(clientDetailsService);
         services.setSupportRefreshToken(true);
@@ -69,7 +69,7 @@ public class SecurityBeans {
         services.setRefreshTokenValiditySeconds(259200);
 
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(jwtAccessTokenConverter, myTokenEnhancer));
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(accessTokenConverter(), myTokenEnhancer));
         services.setTokenEnhancer(tokenEnhancerChain);
         return services;
     }
@@ -77,7 +77,7 @@ public class SecurityBeans {
 
     @Bean
     public TokenStore tokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter);
+        return new JwtTokenStore(accessTokenConverter());
     }
 
     @Bean

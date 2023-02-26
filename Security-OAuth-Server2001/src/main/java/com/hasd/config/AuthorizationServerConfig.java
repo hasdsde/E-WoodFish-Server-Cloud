@@ -1,7 +1,6 @@
 package com.hasd.config;
 
 import com.hasd.service.MyUserDetailService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +34,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     AuthorizationCodeServices authorizationCodeServices;
 
     @Resource
-    @Qualifier(value = "tokenServices")
     AuthorizationServerTokenServices authorizationServerTokenServices;
 
     @Resource

@@ -12,3 +12,6 @@ spring:
         url: jdbc:mysql://hasdsd.cn:3307/ewoodfish?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
         username: root
         password: 123456
+logging:
+    level:
+        org.springframework.security: debug

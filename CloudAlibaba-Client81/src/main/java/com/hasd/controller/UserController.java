@@ -10,6 +10,7 @@ import com.hasd.entity.User;
 import com.hasd.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -51,7 +52,9 @@ public class UserController {
     @Resource
     UserMapper userMapper;
 
-    @PreAuthorize("hasAnyAuthority('user')")
+    //    @PreAuthorize("hasAnyAuthority('user')")
+    @Secured("ROLE_USER")
+    @PreAuthorize("hasAuthority('normal')")
     @GetMapping("/chain")
     public String test() {
         return "success";

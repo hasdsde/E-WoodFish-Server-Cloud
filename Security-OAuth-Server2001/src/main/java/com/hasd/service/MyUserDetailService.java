@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hasd.entity.MyUserDetail;
 import com.hasd.entity.User;
 import com.hasd.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import java.util.List;
  **/
 
 @Service
+@Slf4j
 public class MyUserDetailService implements UserDetailsService {
     @Resource
     UserMapper userMapper;
@@ -32,7 +34,8 @@ public class MyUserDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(user.getRole());
+        log.info("user: " + user.toString());
+        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(user.getAuth());
         MyUserDetail userDetail = new MyUserDetail(s, new BCryptPasswordEncoder().encode(user.getPassword()), authorityList);
         return userDetail;
     }

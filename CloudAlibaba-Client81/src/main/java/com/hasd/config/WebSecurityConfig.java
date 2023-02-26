@@ -1,7 +1,6 @@
 package com.hasd.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * @since : 2023/2/20 14:31
  **/
 
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override

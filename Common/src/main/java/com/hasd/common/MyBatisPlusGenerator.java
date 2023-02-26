@@ -20,9 +20,9 @@ public class MyBatisPlusGenerator {
     // 作者
     public static final String AUTHOR = "hasd";
     //Mapper 路径
-    public static final String OUT_PUT_FILE = "D:/Code/E-WoodFish-Server-Cloud/Security-OAuth-Server2001/src/main/resources/mapper";
+    public static final String OUT_PUT_FILE = "D:/Code/E-WoodFish-Server-Cloud/Security-OAuth-Server4000/src/main/resources/mapper";
     // 父级路径
-    public static final String PARENT_PATH = "D:/Code/E-WoodFish-Server-Cloud/Security-OAuth-Server2001/src/main/java";
+    public static final String PARENT_PATH = "D:/Code/E-WoodFish-Server-Cloud/Security-OAuth-Server4000/src/main/java";
     // 父级包名
     public static final String PARENT_CLASS = "com.hasd";
 

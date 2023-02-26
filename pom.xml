@@ -22,7 +22,6 @@
         <module>SecurityOAuth2000</module>
         <module>SecurityOAuth-Resource3000</module>
         <module>Security-OAuth-Server2001</module>
-        <module>Security-OAuth-Server4000</module>
     </modules>
 
     <properties>

@@ -32,10 +32,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         services.setClientSecret("secret");
         return services;
     }
-
-    @Resource
-    ResourceServerTokenServices resourceServerTokenServices;
-
+    
     @Resource
     TokenStore tokenStore;
 
@@ -43,7 +40,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId("client").stateless(true)
-                .tokenServices(resourceServerTokenServices)
+                .tokenServices(resourceServerTokenServices())
                 .tokenStore(tokenStore)
                 .stateless(true);
     }
